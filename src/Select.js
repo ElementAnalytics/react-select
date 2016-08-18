@@ -62,7 +62,7 @@ var Select = React.createClass({
 
 	getDefaultProps () {
 		return {
-			addLabelRender: (label) => {return 'Add "{label}"?'.replace('{label}', label)},
+			addLabelRender: (label) => {return 'Add "{label}"?'.replace('{label}', label);},
 			allowCreate: false,
 			asyncOptions: undefined,
 			autoload: true,
@@ -195,12 +195,12 @@ var Select = React.createClass({
 	componentDidUpdate () {
 		if (!this.props.disabled && this._focusAfterUpdate) {
 			clearTimeout(this._blurTimeout);
-			clearTimeout(this._focusTimeout);
-			this._focusTimeout = setTimeout(() => {
-				if (!this.isMounted()) return;
-				this.getInputNode().focus();
-				this._focusAfterUpdate = false;
-			}, 50);
+			// clearTimeout(this._focusTimeout);
+			// this._focusTimeout = setTimeout(() => {
+			// 	if (!this.isMounted()) return;
+			// 	this.getInputNode().focus();
+			// 	this._focusAfterUpdate = false;
+			// }, 50);
 		}
 		if (this._focusedOptionReveal) {
 			if (this.refs.focused && this.refs.menu) {
@@ -443,6 +443,7 @@ var Select = React.createClass({
 		if (document.activeElement.isEqualNode(menuDOM)) {
 			return;
 		}
+		this.selectFocusedOption();
 		this._blurTimeout = setTimeout(() => {
 			if (this._focusAfterUpdate || !this.isMounted()) return;
 			this.setState({
@@ -466,7 +467,7 @@ var Select = React.createClass({
 				}
 			return;
 			case 9: // tab
-				if (event.shiftKey || !this.state.isOpen || !this.state.focusedOption) {
+				if (event.shiftKey || !this.state.isOpen) {
 					return;
 				}
 				this.selectFocusedOption();
@@ -602,9 +603,9 @@ var Select = React.createClass({
 
 		if (asyncOpts && typeof asyncOpts.then === 'function') {
 			asyncOpts.then((data) => {
-				optionsResponseHandler(null, data)
+				optionsResponseHandler(null, data);
 			}, (err) => {
-				optionsResponseHandler(err)
+				optionsResponseHandler(err);
 			});
 		}
 	},
@@ -639,7 +640,7 @@ var Select = React.createClass({
 
 	selectFocusedOption () {
 		if (this.props.allowCreate && !this.state.focusedOption) {
-			return this.selectValue(this.state.inputValue);
+			return this.selectValue(this.createNewOption());
 		}
 
 		if (this.state.focusedOption) {

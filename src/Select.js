@@ -754,6 +754,7 @@ var Select = React.createClass({
 			var optionClass = classes({
 				'Select-option': true,
 				'is-selected': isSelected,
+				'is-focused': isFocused,
 				'is-disabled': op.disabled
 			});
 			var ref = isFocused ? 'focused' : null;
@@ -809,6 +810,7 @@ var Select = React.createClass({
 			'Select--multi': this.props.multi,
 			'is-searchable': this.props.searchable,
 			'is-open': this.state.isOpen,
+			'is-focused': this.state.isFocused,
 			'is-loading': this.isLoading(),
 			'is-disabled': this.props.disabled,
 			'has-value': this.state.value

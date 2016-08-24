@@ -62,7 +62,7 @@ var Select = React.createClass({
 
 	getDefaultProps () {
 		return {
-			addLabelRender: (label) => {return 'Add "{label}"?'.replace('{label}', label)},
+			addLabelRender: (label) => {return 'Add "{label}"?'.replace('{label}', label);},
 			allowCreate: false,
 			asyncOptions: undefined,
 			autoload: true,
@@ -446,7 +446,6 @@ var Select = React.createClass({
 		this._blurTimeout = setTimeout(() => {
 			if (this._focusAfterUpdate || !this.isMounted()) return;
 			this.setState({
-				inputValue: '',
 				isFocused: false,
 				isOpen: false
 			});
@@ -466,7 +465,7 @@ var Select = React.createClass({
 				}
 			return;
 			case 9: // tab
-				if (event.shiftKey || !this.state.isOpen || !this.state.focusedOption) {
+				if (event.shiftKey || !this.state.isOpen) {
 					return;
 				}
 				this.selectFocusedOption();
@@ -602,9 +601,9 @@ var Select = React.createClass({
 
 		if (asyncOpts && typeof asyncOpts.then === 'function') {
 			asyncOpts.then((data) => {
-				optionsResponseHandler(null, data)
+				optionsResponseHandler(null, data);
 			}, (err) => {
-				optionsResponseHandler(err)
+				optionsResponseHandler(err);
 			});
 		}
 	},
@@ -639,7 +638,7 @@ var Select = React.createClass({
 
 	selectFocusedOption () {
 		if (this.props.allowCreate && !this.state.focusedOption) {
-			return this.selectValue(this.state.inputValue);
+			return this.selectValue(this.createNewOption());
 		}
 
 		if (this.state.focusedOption) {

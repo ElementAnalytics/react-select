@@ -637,7 +637,6 @@ var Select = React.createClass({
 		this._blurTimeout = setTimeout(function () {
 			if (_this7._focusAfterUpdate || !_this7.isMounted()) return;
 			_this7.setState({
-				inputValue: '',
 				isFocused: false,
 				isOpen: false
 			});
@@ -659,7 +658,7 @@ var Select = React.createClass({
 				return;
 			case 9:
 				// tab
-				if (event.shiftKey || !this.state.isOpen || !this.state.focusedOption) {
+				if (event.shiftKey || !this.state.isOpen) {
 					return;
 				}
 				this.selectFocusedOption();
@@ -842,7 +841,7 @@ var Select = React.createClass({
 
 	selectFocusedOption: function selectFocusedOption() {
 		if (this.props.allowCreate && !this.state.focusedOption) {
-			return this.selectValue(this.state.inputValue);
+			return this.selectValue(this.createNewOption());
 		}
 
 		if (this.state.focusedOption) {

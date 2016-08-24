@@ -195,6 +195,12 @@ var Select = React.createClass({
 	componentDidUpdate () {
 		if (!this.props.disabled && this._focusAfterUpdate) {
 			clearTimeout(this._blurTimeout);
+			clearTimeout(this._focusTimeout);
+			this._focusTimeout = setTimeout(() => {
+				if (!this.isMounted()) return;
+				this.getInputNode().focus();
+				this._focusAfterUpdate = false;
+			}, 50);
 		}
 		if (this._focusedOptionReveal) {
 			if (this.refs.focused && this.refs.menu) {
@@ -433,17 +439,13 @@ var Select = React.createClass({
 	},
 
 	handleInputBlur (event) {
-		if (!this.state.open) {
-			var menuDOM = ReactDOM.findDOMNode(this.refs.menu);
-			if (document.activeElement.isEqualNode(menuDOM)) {
-				return;
-			}
+		var menuDOM = ReactDOM.findDOMNode(this.refs.menu);
+		if (document.activeElement.isEqualNode(menuDOM)) {
+			return;
 		}
-		this.selectFocusedOption();
 		this._blurTimeout = setTimeout(() => {
 			if (this._focusAfterUpdate || !this.isMounted()) return;
 			this.setState({
-				inputValue: '',
 				isFocused: false,
 				isOpen: false
 			});
@@ -748,6 +750,7 @@ var Select = React.createClass({
 			var optionClass = classes({
 				'Select-option': true,
 				'is-selected': isSelected,
+				'is-focused': isFocused,
 				'is-disabled': op.disabled
 			});
 			var ref = isFocused ? 'focused' : null;
@@ -803,6 +806,7 @@ var Select = React.createClass({
 			'Select--multi': this.props.multi,
 			'is-searchable': this.props.searchable,
 			'is-open': this.state.isOpen,
+			'is-focused': this.state.isFocused,
 			'is-loading': this.isLoading(),
 			'is-disabled': this.props.disabled,
 			'has-value': this.state.value

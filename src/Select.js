@@ -195,6 +195,12 @@ var Select = React.createClass({
 	componentDidUpdate () {
 		if (!this.props.disabled && this._focusAfterUpdate) {
 			clearTimeout(this._blurTimeout);
+			clearTimeout(this._focusTimeout);
+			this._focusTimeout = setTimeout(() => {
+				if (!this.isMounted()) return;
+				this.getInputNode().focus();
+				this._focusAfterUpdate = false;
+			}, 50);
 		}
 		if (this._focusedOptionReveal) {
 			if (this.refs.focused && this.refs.menu) {

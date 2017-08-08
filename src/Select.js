@@ -322,7 +322,7 @@ const Select = React.createClass({
 	},
 
 	handleInputBlur (event) {
-		if (this.refs.menu && document.activeElement.isEqualNode(this.refs.menu)) {
+		if (this.refs.menu && (this.refs.menu === document.activeElement || this.refs.menu.contains(document.activeElement))) {
 			return;
 		}
 
